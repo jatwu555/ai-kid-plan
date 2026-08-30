@@ -1,0 +1,179 @@
+/* pages/poster/poster.wxss —— 挑战成功海报页：米白底 + 品牌橙 + 深棕文字 */
+.page {
+  padding: 40rpx 40rpx 64rpx;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 离屏画布：移出可视区（不能 display:none，否则无法绘制） */
+.poster-canvas {
+  position: fixed;
+  left: -9999rpx;
+  top: 0;
+  width: 600px;
+  height: 960px;
+}
+
+/* ── 海报预览 ── */
+.poster-wrap {
+  border-radius: 28rpx;
+  overflow: hidden;
+  box-shadow: 0 8rpx 32rpx rgba(92, 70, 40, 0.14);
+  background: #FFFFFF;
+  min-height: 200rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.poster-img {
+  width: 100%;
+  display: block;
+}
+.poster-loading {
+  padding: 160rpx 0;
+  font-size: 27rpx;
+  color: #A2937F;
+}
+.poster-hint {
+  margin-top: 18rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: #A2937F;
+}
+
+/* ── 分享按钮区 ── */
+.share-bar {
+  margin-top: 44rpx;
+  display: flex;
+  gap: 24rpx;
+}
+.share-btn {
+  flex: 1;
+  margin: 0;
+  height: 96rpx;
+  border-radius: 48rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  padding: 0;
+}
+.share-btn::after {
+  border: none;
+}
+.share-btn.main {
+  background: #C25330;
+  color: #FFFFFF;
+}
+.share-btn.main-hover {
+  background: #A84527;
+}
+.share-btn.sub {
+  background: #FFFFFF;
+  color: #C25330;
+  border: 2rpx solid #E5C9B8;
+}
+.share-btn.sub-hover {
+  background: #FAF0E7;
+}
+
+/* 纯 CSS 分享图标：微信对话气泡 / 朋友圈相机环 */
+.share-icon {
+  width: 34rpx;
+  height: 34rpx;
+  position: relative;
+  flex-shrink: 0;
+}
+.share-icon.wechat {
+  border: 3rpx solid #FFFFFF;
+  border-radius: 50% 50% 45% 45%;
+}
+.share-icon.wechat::after {
+  content: '';
+  position: absolute;
+  left: 6rpx;
+  bottom: -6rpx;
+  width: 10rpx;
+  height: 10rpx;
+  background: #C25330;
+  border-right: 3rpx solid #FFFFFF;
+  border-bottom: 3rpx solid #FFFFFF;
+  transform: rotate(45deg) skew(-10deg, -10deg);
+}
+.share-btn.sub .share-icon.wechat {
+  border-color: #C25330;
+}
+.share-icon.moments {
+  border: 3rpx solid #C25330;
+  border-radius: 50%;
+}
+.share-icon.moments::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12rpx;
+  height: 12rpx;
+  margin: -6rpx 0 0 -6rpx;
+  border-radius: 3rpx;
+  background: #C25330;
+}
+
+/* ── 弱化返回入口 ── */
+.back-links {
+  margin-top: 36rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: #A2937F;
+}
+.back-link {
+  padding: 10rpx 20rpx;
+}
+.back-sep {
+  color: #E5DCCB;
+}
+
+/* ── 朋友圈引导弹层 ── */
+.tl-tip-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(46, 40, 34, 0.55);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tl-tip {
+  width: 540rpx;
+  background: #FFFFFF;
+  border-radius: 36rpx;
+  padding: 48rpx 40rpx 40rpx;
+  text-align: center;
+}
+.tl-tip-title {
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #2E2822;
+}
+.tl-tip-text {
+  margin-top: 20rpx;
+  font-size: 26rpx;
+  color: #6E6153;
+  line-height: 1.8;
+  text-align: left;
+}
+.tl-tip-btn {
+  margin-top: 36rpx;
+  height: 84rpx;
+  line-height: 84rpx;
+  background: #C25330;
+  color: #FFFFFF;
+  font-size: 29rpx;
+  font-weight: 700;
+  border-radius: 42rpx;
+}

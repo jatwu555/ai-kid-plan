@@ -1,0 +1,254 @@
+/* pages/index/index.wxss —— 首页：安静绘本文艺风
+   色板：暖纸底 #FAF6EF / 墨色 #2E2822 / 赤陶橙 #E06A43（装饰）/ 深赤陶 #C25330（文字与按钮） */
+.page {
+  padding: 56rpx 40rpx 64rpx;
+  min-height: 100vh;
+}
+
+/* ── 顶部标题区：左对齐编辑式 + AI 小伙伴 ── */
+.header {
+  padding: 8rpx 8rpx 44rpx;
+}
+.header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.header-text {
+  flex: 1;
+  min-width: 0;
+  padding-right: 20rpx;
+}
+.eyebrow {
+  font-size: 22rpx;
+  font-weight: 600;
+  letter-spacing: 8rpx;
+  color: #B5502C;
+  margin-bottom: 18rpx;
+}
+.title {
+  font-size: 58rpx;
+  font-weight: 800;
+  color: #2E2822;
+  line-height: 1.25;
+  letter-spacing: 2rpx;
+  white-space: nowrap;
+}
+/* AI 小伙伴（SVG 形象，与详情页同源） */
+.bot-img {
+  width: 150rpx;
+  height: 180rpx;
+  margin-top: 6rpx;
+  animation: bot-float 3.2s ease-in-out infinite;
+}
+@keyframes bot-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14rpx); }
+}
+
+/* ── 课程目录：一张白面板 + 细线分节 ── */
+.toc {
+  background: #FFFFFF;
+  border-radius: 32rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(92, 70, 40, 0.06);
+}
+.toc-row {
+  display: flex;
+  align-items: center;
+  padding: 40rpx 36rpx;
+  position: relative;
+}
+/* 当前学习课程：整行淡橙底突出 */
+.toc-row.is-current {
+  background: #FBF2E7;
+}
+.toc-row::after {
+  content: '';
+  position: absolute;
+  left: 36rpx;
+  right: 36rpx;
+  bottom: 0;
+  height: 1rpx;
+  background: #EFE8DA;
+}
+.toc-row:last-child::after {
+  display: none;
+}
+.toc-row-hover {
+  background: #F6EEDD;
+}
+
+/* 大数字锚点 */
+.toc-num {
+  width: 96rpx;
+  flex-shrink: 0;
+  font-size: 52rpx;
+  font-weight: 300;
+  color: #E06A43;
+  line-height: 1;
+}
+
+.toc-main {
+  flex: 1;
+  min-width: 0;
+}
+.toc-title-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.toc-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2E2822;
+}
+.now-tag {
+  margin-left: 14rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 999rpx;
+  background: #C25330;
+  color: #FFFFFF;
+  font-size: 20rpx;
+  font-weight: 500;
+  line-height: 1.5;
+}
+/* 已完成课程：标题弱化为柔和色，绿色小勾承载完成态 */
+.toc-title.is-done {
+  color: #8A7B6B;
+}
+.toc-desc {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #6E6153;
+}
+.toc-arrow {
+  margin-left: 12rpx;
+  flex-shrink: 0;
+  font-size: 30rpx;
+  color: #C25330;
+  font-weight: 600;
+}
+
+/* ── 底部说明 ── */
+.foot {
+  margin-top: 40rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: #A2937F;
+}
+
+/* ── 邀请朋友一起学：轻量横条，不做营销广告感 ── */
+.invite {
+  margin-top: 32rpx;
+  background: #FFFFFF;
+  border-radius: 32rpx;
+  padding: 30rpx 32rpx;
+  box-shadow: 0 4rpx 16rpx rgba(92, 70, 40, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+.invite-text {
+  flex: 1;
+  min-width: 0;
+}
+.invite-desc {
+  font-size: 25rpx;
+  color: #6E6153;
+  line-height: 1.6;
+}
+.invite-btn {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0 24rpx;
+  height: 68rpx;
+  line-height: 68rpx;
+  min-width: 0;
+  width: fit-content;
+  background: #FAEFE6;
+  color: #C25330;
+  font-size: 24rpx;
+  font-weight: 700;
+  border-radius: 34rpx;
+}
+.invite-btn::after {
+  border: none;
+}
+.invite-btn-hover {
+  background: #F3E2D3;
+}
+
+/* ── 已完成课程：绿色小勾 ── */
+.done-badge {
+  flex-shrink: 0;
+  width: 36rpx;
+  height: 36rpx;
+  margin-left: 14rpx;
+  border-radius: 50%;
+  background: #3E9670;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.done-check {
+  width: 18rpx;
+  height: 10rpx;
+  border-left: 4rpx solid #FFFFFF;
+  border-bottom: 4rpx solid #FFFFFF;
+  border-radius: 1rpx;
+  transform: rotate(-45deg);
+  margin-top: -4rpx;
+}
+
+/* ── 首次须知弹窗 ── */
+.mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(46, 40, 34, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.sheet {
+  width: 620rpx;
+  background: #FFFDF9;
+  border-radius: 28rpx;
+  padding: 48rpx 44rpx 40rpx;
+}
+.sheet-eyebrow {
+  font-size: 22rpx;
+  font-weight: 600;
+  letter-spacing: 8rpx;
+  color: #B5502C;
+}
+.sheet-title {
+  margin-top: 10rpx;
+  font-size: 38rpx;
+  font-weight: 800;
+  color: #2E2822;
+}
+.sheet-body {
+  margin-top: 24rpx;
+  font-size: 27rpx;
+  color: #5A4F42;
+  line-height: 1.9;
+  text-align: justify;
+}
+.sheet-btn {
+  margin-top: 36rpx;
+  background: #C25330;
+  color: #FFFFFF;
+  font-size: 30rpx;
+  font-weight: 600;
+  text-align: center;
+  line-height: 2.5;
+  border-radius: 20rpx;
+}
+.sheet-btn:active {
+  background: #A84527;
+}

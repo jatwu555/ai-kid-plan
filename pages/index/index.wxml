@@ -1,0 +1,69 @@
+<!-- pages/index/index.wxml —— 首页：编辑式目录 + 首次须知弹窗 -->
+<view class="page">
+
+  <!-- 顶部标题区：左对齐编辑式排版 + AI 小伙伴 -->
+  <view class="header">
+    <view class="header-row">
+      <view class="header-text">
+        <view class="eyebrow">5 天启蒙计划</view>
+        <view class="title">和孩子一起认识 AI</view>
+      </view>
+      <image class="bot-img" src="{{botSrc}}" mode="aspectFit"/>
+    </view>
+  </view>
+
+  <!-- 课程目录：章节式列表，大数字为视觉锚点 -->
+  <view class="toc">
+    <view
+      class="toc-row {{lastRead.id === item.id ? 'is-current' : ''}}"
+      wx:for="{{courses}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onCourseTap"
+      hover-class="toc-row-hover"
+      hover-stay-time="80"
+    >
+      <view class="toc-num">{{item.num}}</view>
+      <view class="toc-main">
+        <view class="toc-title-line">
+          <text class="toc-title {{item.done ? 'is-done' : ''}}">{{item.title}}</text>
+          <view class="done-badge" wx:if="{{item.done}}">
+            <view class="done-check"></view>
+          </view>
+          <text class="now-tag" wx:if="{{lastRead.id === item.id && !item.done}}">继续学习</text>
+        </view>
+        <view class="toc-desc">{{item.desc}}</view>
+      </view>
+      <view class="toc-arrow">→</view>
+    </view>
+  </view>
+
+  <!-- 邀请朋友一起学：轻量横条入口，open-type=share 拉起微信原生分享 -->
+  <view class="invite">
+    <view class="invite-text">
+      <view class="invite-desc">和朋友一起学习ai，邀请他们接受挑战～</view>
+    </view>
+    <button
+      class="invite-btn"
+      open-type="share"
+      hover-class="invite-btn-hover"
+    >邀请朋友</button>
+  </view>
+
+  <!-- 底部说明 -->
+  <view class="foot">适读 5～10 岁 · 请家长陪同一起使用</view>
+</view>
+
+<!-- 首次使用须知弹窗：点击「知道了」后写入本地标记，之后不再弹出 -->
+<view class="mask" wx:if="{{showNotice}}" catchtouchmove="preventTouchMove">
+  <view class="sheet">
+    <view class="sheet-eyebrow">给家长</view>
+    <view class="sheet-title">使用须知</view>
+    <view class="sheet-body">
+      亲爱的家长，本内容专为 5～10 岁孩子的 AI 启蒙陪伴设计，建议您全程陪同孩子一起学习。
+      适度的 AI 认知启蒙，能帮助孩子建立清晰的表达能力和逻辑思维。
+      同时温馨提醒：合理使用 ≠ 无节制使用，请帮助孩子养成健康的数码设备使用习惯。
+    </view>
+    <view class="sheet-btn" bindtap="onKnowTap">知道了</view>
+  </view>
+</view>

@@ -1,0 +1,82 @@
+<!-- pages/course/course.wxml —— 课程详情页：视频 + 今天认识新朋友 + 亲子任务 + 滑动完成探索
+     AI 小伙伴（SVG 形象）整页出现 1 次：今天认识卡头像 -->
+<view class="page">
+
+  <!-- 课程标题 -->
+  <view class="head">
+    <view class="title">{{course.title}}</view>
+  </view>
+
+  <!-- 视频区域：云端 https 直链流式播放 -->
+  <view class="video-wrap">
+    <video
+      class="video"
+      id="courseVideo"
+      src="{{course.videoUrl}}"
+      controls
+      object-fit="contain"
+      show-center-play-btn
+      title="{{course.title}}"
+    ></video>
+  </view>
+
+  <!-- 今天认识一个新朋友（原「今天记住」，亲子化，含 AI 小伙伴头像） -->
+  <view class="panel remember">
+    <view class="remember-top">
+      <image class="bot-avatar" src="{{botFaceSrc}}" mode="aspectFit"/>
+      <view class="panel-label">今天认识一个新朋友</view>
+    </view>
+    <view class="remember-text">{{course.rememberToday}}</view>
+  </view>
+
+  <!-- 亲子任务：动词小标签 + 内容，末尾附「孩子说一句」轻互动 -->
+  <view class="panel">
+    <view class="panel-label">{{course.taskTitle}}</view>
+    <view class="task-item" wx:for="{{course.taskContent}}" wx:key="index">
+      <view class="task-main">
+        <text class="task-verb" wx:if="{{item.verb}}">{{item.verb}}</text>
+        <text class="task-text">{{item.rest}}</text>
+      </view>
+    </view>
+
+    <!-- 今天请孩子说一句：仅视觉提示，无输入无记录 -->
+    <view class="say-line">
+      <view class="say-label">今天请孩子说一句</view>
+      <view class="say-text">{{course.sayLine}}</view>
+    </view>
+  </view>
+
+  <!-- 滑动完成今天的学习：完成后滑轨变绿锁定 + 弹出挑战完成弹窗 -->
+  <view class="slide-track {{done ? 'is-done' : ''}}">
+    <view class="slide-text">{{done ? '今天的挑战完成啦' : '滑动完成今天的学习'}}</view>
+    <view
+      class="slide-knob {{dragging ? 'is-dragging' : ''}}"
+      style="transform: translateX({{slideX}}px);"
+      catchtouchstart="onSlideStart"
+      catchtouchmove="onSlideMove"
+      catchtouchend="onSlideEnd"
+      catchtouchcancel="onSlideEnd"
+    >
+      <view class="knob-arrow" wx:if="{{!done}}"></view>
+      <view class="knob-check" wx:else></view>
+    </view>
+  </view>
+</view>
+
+<!-- 挑战完成弹窗：全屏半透明遮罩 + 白色圆角弹窗，轻量仪式感 -->
+<view class="done-mask {{donePopin ? 'is-show' : ''}}" wx:if="{{showDonePop}}" catchtouchmove="preventTouchMove">
+  <view class="done-pop">
+    <image class="pop-bot" src="{{botFaceSrc}}" mode="aspectFit"/>
+    <view class="pop-title">今天的挑战完成啦！</view>
+    <view class="pop-course">第{{course.day}}天 · {{course.title}}</view>
+    <view class="pop-progress">
+      <text class="pop-star">★</text>
+      <text class="pop-progress-text">已完成 {{completedDays}} / {{totalDays}} 天</text>
+    </view>
+    <view class="pop-stars">
+      <text class="pop-star-mark {{item ? 'is-on' : ''}}" wx:for="{{popStars}}" wx:key="index">★</text>
+    </view>
+    <button class="pop-main-btn" bindtap="onSharePoster" hover-class="pop-main-btn-hover">晒一晒</button>
+    <view class="pop-sub-btn" bindtap="onCloseDonePop">先不晒</view>
+  </view>
+</view>

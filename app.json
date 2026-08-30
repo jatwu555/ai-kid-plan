@@ -1,0 +1,16 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/course/course",
+    "pages/poster/poster"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#FAF6EF",
+    "navigationBarTitleText": "和孩子一起认识 AI",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FAF6EF",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

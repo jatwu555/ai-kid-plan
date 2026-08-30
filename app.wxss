@@ -1,0 +1,8 @@
+/* app.wxss —— 全局样式：暖纸底 + 墨色文字，安静绘本文艺风 */
+page {
+  background: #FAF6EF; /* 暖纸底色 */
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  color: #2E2822;      /* 墨色 */
+  font-size: 28rpx;
+  line-height: 1.65;
+}

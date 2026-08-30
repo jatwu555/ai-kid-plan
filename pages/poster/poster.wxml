@@ -1,0 +1,40 @@
+<!-- pages/poster/poster.wxml —— 挑战成功海报：Canvas 动态生成 + 好友/朋友圈分享
+     海报内容全部动态：第 N 天 / 课程标题 / 已完成进度；二维码区域预留（未接入小程序码时显示占位） -->
+<view class="page">
+
+  <!-- 离屏画布：负责绘制海报，生成后隐藏 -->
+  <canvas type="2d" id="posterCanvas" class="poster-canvas"></canvas>
+
+  <!-- 海报预览区：canvas 绘制后转图片展示（长按可保存/转发） -->
+  <view class="poster-wrap">
+    <image wx:if="{{posterImage}}" class="poster-img" src="{{posterImage}}" mode="widthFix" show-menu-by-longpress/>
+    <view wx:else class="poster-loading">海报生成中…</view>
+  </view>
+  <view class="poster-hint" wx:if="{{posterImage}}">长按海报可保存到相册</view>
+
+  <!-- 分享按钮区：微信好友（原生分享）+ 朋友圈（官方能力） -->
+  <view class="share-bar">
+    <button class="share-btn main" open-type="share" hover-class="share-btn-main-hover">
+      <view class="share-icon wechat"></view>微信好友
+    </button>
+    <button class="share-btn sub" bindtap="onShareTimelineTap" hover-class="share-btn-sub-hover">
+      <view class="share-icon moments"></view>朋友圈
+    </button>
+  </view>
+
+  <!-- 弱化返回入口 -->
+  <view class="back-links">
+    <text class="back-link" bindtap="onBackCourse">返回课程</text>
+    <text class="back-sep">｜</text>
+    <text class="back-link" bindtap="onBackHome">回到首页</text>
+  </view>
+</view>
+
+<!-- 朋友圈分享引导：官方能力受限时引导右上角菜单 -->
+<view class="tl-tip-mask" wx:if="{{showTimelineTip}}" bindtap="onCloseTimelineTip" catchtouchmove="preventTouchMove">
+  <view class="tl-tip">
+    <view class="tl-tip-title">分享到朋友圈</view>
+    <view class="tl-tip-text">请点击右上角「···」→「分享到朋友圈」，把挑战成果分享给朋友们。</view>
+    <view class="tl-tip-btn" bindtap="onCloseTimelineTip">我知道了</view>
+  </view>
+</view>
