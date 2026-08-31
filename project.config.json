@@ -1,6 +1,6 @@
 {
   "description": "5 天亲子 AI 启蒙陪伴计划 · 微信原生小程序 MVP",
-  "appid": "wxb7fb689e2520b573",
+  "appid": "wx49bf2eb03573e0d3",
   "compileType": "miniprogram",
   "projectname": "ai-kid-plan",
   "libVersion": "3.0.0",
@@ -10,7 +10,30 @@
     "minified": true,
     "urlCheck": false,
     "coverView": true,
-    "autoAudits": false
+    "autoAudits": false,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "enhance": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
   },
-  "isGameTourist": false
+  "isGameTourist": false,
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {}
 }

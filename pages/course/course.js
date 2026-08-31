@@ -30,6 +30,8 @@ Page({
     // 挑战完成弹窗
     showDonePop: false,   // 是否显示完成弹窗
     donePopin: false,     // 弹窗淡入动画标记（延时触发，保证过渡生效）
+    popBtnPressed: false, // 「晒一晒」按下态（touch 驱动，避免导航后 hover 残留）
+    resharePressed: false, // 滑轨下方「分享」按下态（同上）
     completedDays: 0,     // 已完成天数
     totalDays: 5,         // 总天数（courses.length）
     popStars: []          // 弹窗进度星标 [true, true, false, false, false]
@@ -42,7 +44,11 @@ Page({
   },
 
   onReady() {
-    // 实测滑轨与滑块宽度，计算最大滑动距离
+    this.measureTrack()
+  },
+
+  // 实测滑轨与滑块宽度，计算最大滑动距离（完成态滑轨因并排「分享」变窄，需重测）
+  measureTrack() {
     const query = wx.createSelectorQuery()
     query.select('.slide-track').boundingClientRect()
     query.select('.slide-knob').boundingClientRect()
@@ -123,6 +129,8 @@ Page({
       popStars,
       showDonePop: true
     })
+    // 滑轨因并排「分享」按钮变窄，等布局更新后重测滑行距离，避免滑块越界
+    setTimeout(() => this.measureTrack(), 80)
     // 延时一帧触发淡入动画
     setTimeout(() => this.setData({ donePopin: true }), 60)
   },
@@ -139,6 +147,36 @@ Page({
     wx.navigateTo({
       url: `/pages/poster/poster?day=${c.day}&title=${encodeURIComponent(c.title)}&done=${this.data.completedDays}&total=${this.data.totalDays}`
     })
+  },
+
+  // 滑轨下方「分享」：完成后随时再次打开晒一晒页（实时重算进度，不依赖弹窗状态）
+  onSharePosterTap() {
+    const c = this.data.course
+    wx.navigateTo({
+      url: `/pages/poster/poster?day=${c.day}&title=${encodeURIComponent(c.title)}&done=${countDone()}&total=${courses.length}`
+    })
+  },
+
+  // 「分享」按钮按下态：touch 驱动（同「晒一晒」按钮），避免 navigateTo 后残留
+  onResharePressStart() {
+    this.setData({ resharePressed: true })
+  },
+
+  onResharePressEnd() {
+    if (this.data.resharePressed) {
+      this.setData({ resharePressed: false })
+    }
+  },
+
+  // 「晒一晒」按下态：touch 驱动，与首页目录行同一策略，避免 navigateTo 后 hover 残留
+  onPopBtnPressStart() {
+    this.setData({ popBtnPressed: true })
+  },
+
+  onPopBtnPressEnd() {
+    if (this.data.popBtnPressed) {
+      this.setData({ popBtnPressed: false })
+    }
   },
 
   // 好友分享：邀请语 + 定向课程路径（右上角菜单与页面内分享按钮共用）

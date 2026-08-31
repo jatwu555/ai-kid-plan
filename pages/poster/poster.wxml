@@ -1,32 +1,52 @@
-<!-- pages/poster/poster.wxml —— 挑战成功海报：Canvas 动态生成 + 好友/朋友圈分享
-     海报内容全部动态：第 N 天 / 课程标题 / 已完成进度；二维码区域预留（未接入小程序码时显示占位） -->
+<!-- pages/poster/poster.wxml —— 挑战完成分享页：①完成反馈 ②海报预览（固定3:4） ③分享操作
+     海报为 WXML 版式预览；小程序码接入后替换 qrSrc 即可，版式与比例不变 -->
 <view class="page">
 
-  <!-- 离屏画布：负责绘制海报，生成后隐藏 -->
-  <canvas type="2d" id="posterCanvas" class="poster-canvas"></canvas>
-
-  <!-- 海报预览区：canvas 绘制后转图片展示（长按可保存/转发） -->
-  <view class="poster-wrap">
-    <image wx:if="{{posterImage}}" class="poster-img" src="{{posterImage}}" mode="widthFix" show-menu-by-longpress/>
-    <view wx:else class="poster-loading">海报生成中…</view>
+  <!-- ① 完成反馈：紧凑居中，尽快让位给海报 -->
+  <view class="done-head">
+    <view class="done-title-row">
+      <view class="spark spark-l"></view>
+      <text class="done-title">挑战完成 🎉</text>
+      <view class="spark spark-r"></view>
+    </view>
+    <view class="done-sub">今天又和孩子一起认识了一点 AI</view>
   </view>
-  <view class="poster-hint" wx:if="{{posterImage}}">长按海报可保存到相册</view>
 
-  <!-- 分享按钮区：微信好友（原生分享）+ 朋友圈（官方能力） -->
+  <!-- ② 分享海报预览：白色大圆角卡片，padding-bottom 撑出固定 3:4 比例 -->
+  <view class="poster">
+    <view class="poster-inner">
+      <view class="poster-tag">每天 5 分钟，和孩子一起认识 AI</view>
+      <view class="poster-day">完成第 <text class="day-num">{{day}}</text> 天</view>
+      <view class="poster-course">《{{title}}》</view>
+
+      <view class="poster-progress">
+        <text wx:for="{{stars}}" wx:key="index" class="star {{item.on ? 'on' : ''}}">{{item.on ? '★' : '☆'}}</text>
+      </view>
+
+      <image class="poster-bot" src="{{botSrc}}" mode="aspectFit" />
+
+      <view class="poster-qr">
+        <image class="qr-img" src="{{qrSrc}}" mode="aspectFit" />
+      </view>
+      <view class="poster-qr-label">扫码一起认识 AI</view>
+    </view>
+  </view>
+
+  <!-- ③ 分享操作：与海报区明显分隔 -->
   <view class="share-bar">
-    <button class="share-btn main" open-type="share" hover-class="share-btn-main-hover">
-      <view class="share-icon wechat"></view>微信好友
+    <button class="share-btn main" open-type="share" hover-class="main-hover">
+      <image class="btn-ic" src="/assets/icon-wechat-white.png" mode="aspectFit" />
+      <text>微信好友</text>
     </button>
-    <button class="share-btn sub" bindtap="onShareTimelineTap" hover-class="share-btn-sub-hover">
-      <view class="share-icon moments"></view>朋友圈
+    <button class="share-btn sub" bindtap="onShareTimelineTap" hover-class="sub-hover">
+      <image class="btn-ic" src="/assets/icon-moments.png" mode="aspectFit" />
+      <text>朋友圈</text>
     </button>
   </view>
 
-  <!-- 弱化返回入口 -->
-  <view class="back-links">
-    <text class="back-link" bindtap="onBackCourse">返回课程</text>
-    <text class="back-sep">｜</text>
-    <text class="back-link" bindtap="onBackHome">回到首页</text>
+  <!-- 底部弱操作：只留一个返回 -->
+  <view class="back-row">
+    <text class="back-link" bindtap="onBackCourse" hover-class="back-link-hover">返回课程</text>
   </view>
 </view>
 

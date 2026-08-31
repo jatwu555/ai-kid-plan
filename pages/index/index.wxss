@@ -75,7 +75,8 @@
 .toc-row:last-child::after {
   display: none;
 }
-.toc-row-hover {
+/* 按下态由 touchstart/touchend 手动管理：hover-class 在 bindtap 内 navigateTo 后会残留不复位 */
+.toc-row.is-pressed {
   background: #F6EEDD;
 }
 
@@ -201,14 +202,34 @@
   margin-top: -4rpx;
 }
 
-/* ── 首次须知弹窗 ── */
+/* ── 底部「温馨提示」入口：再次唤出家长须知 ── */
+.notice-entry {
+  margin-top: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  font-size: 24rpx;
+  color: #B5502C;
+  padding: 14rpx 28rpx;
+}
+.notice-entry-heart {
+  width: 26rpx;
+  height: 26rpx;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21C5 16 1 12.5 1 8.5 1 5.4 3.4 3 6.5 3c2.2 0 4.3 1.3 5.5 3.3C13.2 4.3 15.3 3 17.5 3 20.6 3 23 5.4 23 8.5c0 4-4 7.5-11 12.5z' fill='%23FB5A1F'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.notice-entry-hover {
+  opacity: 0.65;
+}
+
+/* ── 家长须知弹窗：奶黄暖底 + 近白面板 + 白色提示清单 ── */
 .mask {
   position: fixed;
   left: 0;
   top: 0;
   right: 0;
   bottom: 0;
-  background: rgba(46, 40, 34, 0.5);
+  background: rgba(46, 40, 34, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -216,39 +237,116 @@
 }
 .sheet {
   width: 620rpx;
-  background: #FFFDF9;
-  border-radius: 28rpx;
-  padding: 48rpx 44rpx 40rpx;
+  background: #FBEFD7; /* 奶黄描边层，来自设计稿边缘取色 */
+  border-radius: 32rpx;
+  padding: 10rpx;
+  box-shadow: 0 24rpx 60rpx rgba(60, 38, 12, 0.22);
+}
+.sheet-panel {
+  background: #FDFCF6; /* 近白暖面板 */
+  border-radius: 26rpx;
+  padding: 34rpx 30rpx 30rpx;
+  overflow: hidden;
+}
+.sheet-head {
+  display: flex;
+  align-items: flex-start;
+}
+.sheet-head-text {
+  flex: 1;
+  min-width: 0;
+  padding-top: 10rpx;
 }
 .sheet-eyebrow {
+  display: flex;
+  align-items: center;
   font-size: 22rpx;
-  font-weight: 600;
-  letter-spacing: 8rpx;
-  color: #B5502C;
+  font-weight: 700;
+  color: #FB5A1F;
+  letter-spacing: 2rpx;
+}
+.eyebrow-heart {
+  width: 26rpx;
+  height: 26rpx;
+  margin-right: 8rpx;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21C5 16 1 12.5 1 8.5 1 5.4 3.4 3 6.5 3c2.2 0 4.3 1.3 5.5 3.3C13.2 4.3 15.3 3 17.5 3 20.6 3 23 5.4 23 8.5c0 4-4 7.5-11 12.5z' fill='%23FB5A1F'/%3E%3C/svg%3E") center/contain no-repeat;
 }
 .sheet-title {
-  margin-top: 10rpx;
-  font-size: 38rpx;
+  margin-top: 16rpx;
+  font-size: 40rpx;
   font-weight: 800;
-  color: #2E2822;
+  color: #3A2A24;
+  line-height: 1.4;
 }
-.sheet-body {
-  margin-top: 24rpx;
-  font-size: 27rpx;
-  color: #5A4F42;
-  line-height: 1.9;
-  text-align: justify;
+.title-accent {
+  color: #FB7602;
+}
+.sheet-illus {
+  width: 258rpx;
+  height: 264rpx;
+  flex-shrink: 0;
+  margin: -14rpx -10rpx 0 0; /* 插画微微顶到面板右上角，还原设计稿出血感 */
+}
+.notice-list {
+  margin-top: 26rpx;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 8rpx 24rpx;
+  box-shadow: 0 6rpx 20rpx rgba(203, 164, 94, 0.18);
+}
+.notice-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+}
+.notice-divider {
+  height: 0;
+  border-top: 2rpx dashed #F6E4C4;
+}
+.notice-icon {
+  width: 64rpx;
+  height: 64rpx;
+  flex-shrink: 0;
+  margin-right: 20rpx;
+  border-radius: 50%;
+}
+.notice-icon-family { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%23FDEFBE'/%3E%3Ccircle cx='19.5' cy='18.5' r='5' fill='%23F5A300'/%3E%3Cpath d='M10.5 33.5c0-5 4-8.5 9-8.5s9 3.5 9 8.5z' fill='%23F5A300'/%3E%3Ccircle cx='31' cy='21' r='4' fill='%23EF8E00'/%3E%3Cpath d='M25 33.5c.2-4 3-6.8 6.3-6.8 3.4 0 6.2 2.9 6.4 6.8z' fill='%23EF8E00'/%3E%3C/svg%3E") center/contain no-repeat; }
+.notice-icon-safe { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%23E3F6D0'/%3E%3Cpath d='M24 11.5l9.5 3.5v7.4c0 5.8-4 10-9.5 11.9-5.5-1.9-9.5-6.1-9.5-11.9V15z' fill='%234FAE57'/%3E%3Cpath d='M24 18.8l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6z' fill='%23FFFFFF'/%3E%3C/svg%3E") center/contain no-repeat; }
+.notice-icon-time { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%23D8ECFB'/%3E%3Ccircle cx='24' cy='24' r='10.5' fill='none' stroke='%234295E6' stroke-width='2.6'/%3E%3Cpath d='M24 17.8V24l4.4 2.7' fill='none' stroke='%234295E6' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat; }
+.notice-text {
+  flex: 1;
+  font-size: 24rpx;
+  color: #5B463A;
+  line-height: 1.7;
 }
 .sheet-btn {
-  margin-top: 36rpx;
-  background: #C25330;
+  position: relative;
+  margin-top: 30rpx;
+  height: 92rpx;
+  line-height: 92rpx;
+  border-radius: 999rpx;
+  background: linear-gradient(118deg, #FFA02E 0%, #FF7A1B 48%, #FE5001 100%);
   color: #FFFFFF;
-  font-size: 30rpx;
-  font-weight: 600;
+  font-size: 32rpx;
+  font-weight: 700;
   text-align: center;
-  line-height: 2.5;
-  border-radius: 20rpx;
+  letter-spacing: 4rpx;
+  box-shadow: 0 10rpx 24rpx rgba(254, 90, 20, 0.25);
 }
-.sheet-btn:active {
-  background: #A84527;
+.sheet-btn::before,
+.sheet-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 22rpx;
+  height: 22rpx;
+  margin-top: -11rpx;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10 0c.9 5.5 4.6 9.1 10 10-5.4.9-9.1 4.5-10 10-.9-5.5-4.6-9.1-10-10C5.4 9.1 9.1 5.5 10 0z' fill='%23FFFFFF'/%3E%3C/svg%3E") center/contain no-repeat;
+  opacity: 0.9;
+}
+.sheet-btn::before { left: 30rpx; }
+.sheet-btn::after { right: 30rpx; }
+.sheet-btn-hover {
+  transform: translateY(2rpx);
+  opacity: 0.92;
 }

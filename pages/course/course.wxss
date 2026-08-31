@@ -129,9 +129,16 @@
 /* ── 滑动完成今天的探索 ──
    未完成：米色滑轨 + 白色滑块（赤陶橙箭头）
    已完成：绿色滑轨锁定 + 白色对勾，不可再操作 */
+.slide-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-top: 44rpx;
+}
 .slide-track {
   position: relative;
-  margin-top: 44rpx;
+  flex: 1;
+  min-width: 0;
   height: 108rpx;
   border-radius: 54rpx;
   background: #F1E8D8;
@@ -299,7 +306,7 @@
 .pop-main-btn::after {
   border: none;
 }
-.pop-main-btn-hover {
+.pop-main-btn.is-pressed {
   background: #A84527;
 }
 .pop-sub-btn {
@@ -313,4 +320,28 @@
 @keyframes pop-fade {
   from { opacity: 0; transform: translateY(12rpx); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 完成后的再次分享入口（与滑轨并排，等高） ── */
+.reshare-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  height: 108rpx;
+  padding: 0 32rpx;
+  border-radius: 54rpx;
+  background: #C25330;
+  color: #FFFFFF;
+  font-size: 27rpx;
+  font-weight: 700;
+  box-sizing: border-box;
+}
+.reshare-btn.is-pressed {
+  background: #A84527;
+  transform: translateY(2rpx);
+}
+.reshare-ic {
+  width: 30rpx;
+  height: 30rpx;
 }

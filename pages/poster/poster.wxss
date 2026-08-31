@@ -1,64 +1,174 @@
-/* pages/poster/poster.wxss —— 挑战成功海报页：米白底 + 品牌橙 + 深棕文字 */
+/* pages/poster/poster.wxss —— 挑战完成分享页：极简三段式
+   色板沿用全局：暖纸 #FAF6EF / 墨色 #2E2822 / 赤陶橙 #C25330 / 奶油 #FBEFD7 / 暖灰 #8A7B6B */
 .page {
-  padding: 40rpx 40rpx 64rpx;
+  padding: 24rpx 32rpx calc(40rpx + env(safe-area-inset-bottom));
   min-height: 100vh;
   box-sizing: border-box;
 }
 
-/* 离屏画布：移出可视区（不能 display:none，否则无法绘制） */
-.poster-canvas {
-  position: fixed;
-  left: -9999rpx;
-  top: 0;
-  width: 600px;
-  height: 960px;
+/* ── ① 完成反馈：紧凑居中 ── */
+.done-head {
+  text-align: center;
+  padding: 12rpx 0 8rpx;
+}
+.done-title-row {
+  position: relative;
+  display: inline-block;
+}
+.done-title {
+  font-size: 42rpx;
+  font-weight: 800;
+  color: #2E2822;
+  letter-spacing: 2rpx;
+}
+/* 轻量星光：只做点缀，不抢内容 */
+.spark {
+  position: absolute;
+  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path d='M10 0c.9 5.5 4.6 9.1 10 10-5.4.9-9.1 4.5-10 10-.9-5.5-4.6-9.1-10-10C5.4 9.1 9.1 5.5 10 0z' fill='%23E8A13C'/></svg>") center/contain no-repeat;
+}
+.spark-l {
+  width: 30rpx;
+  height: 30rpx;
+  left: -46rpx;
+  top: -12rpx;
+}
+.spark-r {
+  width: 20rpx;
+  height: 20rpx;
+  right: -36rpx;
+  top: -18rpx;
+  opacity: 0.6;
+}
+.done-sub {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: #8A7B6B;
 }
 
-/* ── 海报预览 ── */
-.poster-wrap {
-  border-radius: 28rpx;
+/* ── ② 海报：白色大圆角卡片，padding-bottom 撑出固定 3:4 ── */
+.poster {
+  position: relative;
+  width: 100%;
+  height: 0;
+  margin-top: 28rpx;
+  padding-bottom: 133.333%;
+  border-radius: 48rpx;
+  background: #FFFDF8;
+  box-shadow: 0 12rpx 40rpx rgba(92, 70, 40, 0.10);
   overflow: hidden;
-  box-shadow: 0 8rpx 32rpx rgba(92, 70, 40, 0.14);
-  background: #FFFFFF;
-  min-height: 200rpx;
+}
+.poster-inner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 44rpx 40rpx 40rpx;
+  text-align: center;
+}
+.poster-tag {
+  padding: 8rpx 26rpx;
+  border-radius: 999rpx;
+  background: #FBEFD7;
+  color: #B5502C;
+  font-size: 20rpx;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+}
+.poster-day {
+  margin-top: auto; /* 与二维码组的 auto 等分剩余空间，中部内容垂直居中不留大空档 */
+  font-size: 52rpx;
+  font-weight: 800;
+  color: #2E2822;
+  line-height: 1.3;
+}
+.day-num {
+  color: #C25330;
+}
+.poster-course {
+  margin-top: 18rpx;
+  max-width: 100%;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #2E2822;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.poster-progress {
+  margin-top: 26rpx;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 10rpx;
 }
-.poster-img {
+.star {
+  font-size: 44rpx;
+  line-height: 1;
+  color: #E4D9C6;
+}
+.star.on {
+  color: #F0B63A;
+}
+.poster-qr {
+  margin-top: auto; /* 与完成天数的 auto 等分剩余空间 */
+  width: 216rpx;
+  height: 216rpx;
+  padding: 10rpx;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  border: 2rpx solid #F0E7D6;
+  border-radius: 16rpx;
+}
+.qr-img {
   width: 100%;
-  display: block;
+  height: 100%;
 }
-.poster-loading {
-  padding: 160rpx 0;
-  font-size: 27rpx;
-  color: #A2937F;
-}
-.poster-hint {
-  margin-top: 18rpx;
-  text-align: center;
+.poster-qr-label {
+  margin-top: 12rpx;
   font-size: 22rpx;
-  color: #A2937F;
+  color: #8A7B6B;
 }
 
-/* ── 分享按钮区 ── */
+/* AI 机器人：完成氛围元素，轻微上下浮动 */
+.poster-bot {
+  width: 128rpx;
+  height: 154rpx;
+  margin-top: 28rpx;
+  animation: bot-float 3.2s ease-in-out infinite;
+}
+@keyframes bot-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12rpx); }
+}
+
+/* ── ③ 分享操作：与海报明显分隔 ── */
 .share-bar {
-  margin-top: 44rpx;
+  margin-top: 30rpx;
   display: flex;
-  gap: 24rpx;
+  gap: 20rpx;
 }
 .share-btn {
   flex: 1;
   margin: 0;
-  height: 96rpx;
-  border-radius: 48rpx;
+  height: 104rpx;
+  border-radius: 999rpx;
   font-size: 30rpx;
   font-weight: 700;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12rpx;
-  padding: 0;
+}
+.btn-ic {
+  width: 38rpx;
+  height: 38rpx;
+  flex-shrink: 0;
 }
 .share-btn::after {
   border: none;
@@ -73,69 +183,29 @@
 .share-btn.sub {
   background: #FFFFFF;
   color: #C25330;
-  border: 2rpx solid #E5C9B8;
+  border: 2rpx solid #C25330;
+  box-sizing: border-box;
 }
 .share-btn.sub-hover {
-  background: #FAF0E7;
+  background: #FBEFD7;
 }
 
-/* 纯 CSS 分享图标：微信对话气泡 / 朋友圈相机环 */
-.share-icon {
-  width: 34rpx;
-  height: 34rpx;
-  position: relative;
-  flex-shrink: 0;
-}
-.share-icon.wechat {
-  border: 3rpx solid #FFFFFF;
-  border-radius: 50% 50% 45% 45%;
-}
-.share-icon.wechat::after {
-  content: '';
-  position: absolute;
-  left: 6rpx;
-  bottom: -6rpx;
-  width: 10rpx;
-  height: 10rpx;
-  background: #C25330;
-  border-right: 3rpx solid #FFFFFF;
-  border-bottom: 3rpx solid #FFFFFF;
-  transform: rotate(45deg) skew(-10deg, -10deg);
-}
-.share-btn.sub .share-icon.wechat {
-  border-color: #C25330;
-}
-.share-icon.moments {
-  border: 3rpx solid #C25330;
-  border-radius: 50%;
-}
-.share-icon.moments::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 12rpx;
-  height: 12rpx;
-  margin: -6rpx 0 0 -6rpx;
-  border-radius: 3rpx;
-  background: #C25330;
-}
-
-/* ── 弱化返回入口 ── */
-.back-links {
-  margin-top: 36rpx;
+/* ── 底部弱操作：返回课程 ── */
+.back-row {
+  margin-top: 20rpx;
   text-align: center;
+}
+.back-link {
+  display: inline-block;
+  padding: 16rpx 40rpx;
   font-size: 24rpx;
   color: #A2937F;
 }
-.back-link {
-  padding: 10rpx 20rpx;
-}
-.back-sep {
-  color: #E5DCCB;
+.back-link-hover {
+  opacity: 0.6;
 }
 
-/* ── 朋友圈引导弹层 ── */
+/* ── 朋友圈引导弹层（沿用原样式） ── */
 .tl-tip-mask {
   position: fixed;
   left: 0;

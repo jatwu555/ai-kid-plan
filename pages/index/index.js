@@ -19,6 +19,7 @@ Page({
   data: {
     courses: courseList,
     showNotice: false, // 是否显示首次须知弹窗
+    pressedId: null,   // 目录行按下态 id（touchstart 置入，touchend/touchcancel 复位）
     lastRead: null,    // { id, day, title } 上次看到的课程
     botSrc: fullBotSvg() // AI 小伙伴形象（SVG data URI）
   },
@@ -60,12 +61,28 @@ Page({
     this.setData({ showNotice: false })
   },
 
+  // 底部「温馨提示」入口：再次唤出家长须知弹窗（不影响「知道了」后不再自动弹出）
+  onNoticeEntryTap() {
+    this.setData({ showNotice: true })
+  },
+
   // 点击课程行 → 跳转详情页
   onCourseTap(e) {
     const id = e.currentTarget.dataset.id
     wx.navigateTo({
       url: `/pages/course/course?id=${id}`
     })
+  },
+
+  // 目录行按下态：touchend 先于 tap 触发，进详情页前已复位，避免 navigateTo 后按下背景残留
+  onRowPressStart(e) {
+    this.setData({ pressedId: e.currentTarget.dataset.id })
+  },
+
+  onRowPressEnd() {
+    if (this.data.pressedId !== null) {
+      this.setData({ pressedId: null })
+    }
   },
 
   // 邀请朋友一起学：微信原生好友分享（button open-type=share 触发）

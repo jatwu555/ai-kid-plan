@@ -27,18 +27,25 @@ ai-kid-plan/
     │   ├── index.wxss
     │   ├── index.js
     │   └── index.json
-    └── course/               # 课程详情页：视频 + 今天认识一个新朋友 + 亲子任务 + 滑动完成探索
-        ├── course.wxml
-        ├── course.wxss
-        ├── course.js
-        └── course.json
+    ├── course/               # 课程详情页：视频 + 重点笔记 + 亲子任务 + 滑动完成探索
+    │   ├── course.wxml
+    │   ├── course.wxss
+    │   ├── course.js
+    │   └── course.json
+    └── poster/               # 挑战完成分享页：完成反馈 + 3:4 海报预览 + 好友/朋友圈分享
+        ├── poster.wxml
+        ├── poster.wxss
+        ├── poster.js
+        └── poster.json
 ```
 
 ## 功能清单
 
 | 功能 | 实现位置 |
 |---|---|
-| 首次使用须知弹窗（点「知道了」后不再弹） | `pages/index` + 本地存储 `notice_confirmed` |
+| 家长须知弹窗（首用自动弹出；点「知道了」后不再自动弹出） | `pages/index` + 本地存储 `notice_confirmed` |
+| 底部「温馨提示」入口，点击随时再次唤起弹窗 | `pages/index/index.wxml` 的 `notice-entry` + `onNoticeEntryTap` |
+| 弹窗插画（设计稿裁切导出，约 52KB） | `assets/notice-illustration.jpg` |
 | 5 节课目录列表 → 点击进详情 | `pages/index/index.wxml` `onCourseTap` |
 | 视频展示区（video 组件） | `pages/course/course.wxml` |
 | 「今天记住」一句话 | `data/courses.js` 的 `rememberToday` 字段 |
@@ -46,7 +53,8 @@ ai-kid-plan/
 | 上一课 / 下一课（第 1 课无上一课、第 5 课无下一课，禁用态） | `pages/course/course.js` `onPrevTap / onNextTap` |
 | 返回首页 | 使用微信导航栏左上角返回箭头（页面栈为空时系统自动回首页） |
 | 本地浏览记录 → 目录行内「上次看到」标记 | 本地存储 `last_read_course` |
-| 分享给微信好友 | 详情页 `onShareAppMessage`（顺带支持） |
+| 挑战完成分享页（完成反馈 + 3:4 海报预览 + 分享） | `pages/poster`（课程完成弹窗「晒一晒」进入） |
+| 分享给微信好友 | 详情页 `onShareAppMessage` + 海报页按钮 `open-type=share` |
 
 ## 视频播放（已接入云端）
 
@@ -66,15 +74,18 @@ ai-kid-plan/
 | 视频换源 / 新增课程视频 | `data/courses.js` 的 `videoUrl`（https 直链即可） |
 | 新增第 6 天及以后课程 | `data/courses.js` 数组追加对象即可，首页目录、上一课/下一课边界自动适配 |
 | 主色 / 底色 | 各页面 wxss 顶部的色板注释（赤陶橙 `#C25330` / 暖纸底 `#FAF6EF`） |
-| 弹窗文案 | `pages/index/index.wxml` 底部 sheet 区块 |
+| 弹窗文案 | `pages/index/index.wxml` 底部弹窗区块 |
+| 换弹窗插画 | 替换 `assets/notice-illustration.jpg`（建议宽 500px 左右、JPEG、100KB 内） |
+| 接入正式小程序码 | 替换 `pages/poster/poster.js` 里 `qrSrc`（现为占位图），版式比例不动 |
 | 小程序名称 / 导航栏标题 | `app.json` 的 `navigationBarTitleText`，及微信公众平台设置 |
 
 ## 已覆盖的质量项
 
-- 首次须知弹窗阻止底层滚动（`catchtouchmove`），确认后写入本地存储永不复弹
+- 家长须知弹窗阻止底层滚动（`catchtouchmove`），「知道了」后写入本地存储不再自动弹出；底部「温馨提示」可随时手动再次唤起
 - 上一课/下一课禁用态（视觉置灰 + 逻辑层边界判断双保险）
 - 非法课程 id 兜底到第 1 课
 - 返回首页后自动刷新「上次看到」标记（`onShow` 重读本地存储）
+- 目录行与「晒一晒」按钮的按下态由 touchstart/touchend 手动管理，规避 `bindtap` 内 `navigateTo` 导致的按下背景残留
 - 大字号、大按钮、目录式排版，适合儿童与家长共同阅读
 - iPhone / Android / iPad 模拟器分辨率均正常（rpx 自适应布局）
 

@@ -15,13 +15,14 @@
   <!-- 课程目录：章节式列表，大数字为视觉锚点 -->
   <view class="toc">
     <view
-      class="toc-row {{lastRead.id === item.id ? 'is-current' : ''}}"
+      class="toc-row {{pressedId === item.id ? 'is-pressed' : ''}} {{lastRead.id === item.id ? 'is-current' : ''}}"
       wx:for="{{courses}}"
       wx:key="id"
       data-id="{{item.id}}"
       bindtap="onCourseTap"
-      hover-class="toc-row-hover"
-      hover-stay-time="80"
+      bindtouchstart="onRowPressStart"
+      bindtouchend="onRowPressEnd"
+      bindtouchcancel="onRowPressEnd"
     >
       <view class="toc-num">{{item.num}}</view>
       <view class="toc-main">
@@ -50,20 +51,47 @@
     >邀请朋友</button>
   </view>
 
-  <!-- 底部说明 -->
+  <!-- 底部说明 + 温馨提示入口（点击再次查看家长须知） -->
   <view class="foot">适读 5～10 岁 · 请家长陪同一起使用</view>
+  <view class="notice-entry" hover-class="notice-entry-hover" hover-stay-time="80" bindtap="onNoticeEntryTap">
+    <text class="notice-entry-heart"></text>
+    <text>温馨提示</text>
+  </view>
 </view>
 
-<!-- 首次使用须知弹窗：点击「知道了」后写入本地标记，之后不再弹出 -->
+<!-- 家长须知弹窗：首次使用自动弹出，点「知道了」后不再自动弹出；可从底部「温馨提示」再次唤起 -->
 <view class="mask" wx:if="{{showNotice}}" catchtouchmove="preventTouchMove">
   <view class="sheet">
-    <view class="sheet-eyebrow">给家长</view>
-    <view class="sheet-title">使用须知</view>
-    <view class="sheet-body">
-      亲爱的家长，本内容专为 5～10 岁孩子的 AI 启蒙陪伴设计，建议您全程陪同孩子一起学习。
-      适度的 AI 认知启蒙，能帮助孩子建立清晰的表达能力和逻辑思维。
-      同时温馨提醒：合理使用 ≠ 无节制使用，请帮助孩子养成健康的数码设备使用习惯。
+    <view class="sheet-panel">
+      <view class="sheet-head">
+        <view class="sheet-head-text">
+          <view class="sheet-eyebrow"><text class="eyebrow-heart"></text>给家长的小提醒</view>
+          <view class="sheet-title">
+            <view class="title-line">陪孩子一起</view>
+            <view class="title-line">开启 <text class="title-accent">AI</text> 启蒙</view>
+          </view>
+        </view>
+        <image class="sheet-illus" src="/assets/notice-illustration.jpg" mode="aspectFit" />
+      </view>
+
+      <view class="notice-list">
+        <view class="notice-item">
+          <view class="notice-icon notice-icon-family"></view>
+          <text class="notice-text">本内容适合 5-10 岁孩子使用，建议家长陪伴孩子一起探索、一起提问。</text>
+        </view>
+        <view class="notice-divider"></view>
+        <view class="notice-item">
+          <view class="notice-icon notice-icon-safe"></view>
+          <text class="notice-text">适度的 AI 互动，可以帮助孩子练习表达、培养思考与逻辑。</text>
+        </view>
+        <view class="notice-divider"></view>
+        <view class="notice-item">
+          <view class="notice-icon notice-icon-time"></view>
+          <text class="notice-text">也请您协助孩子合理安排使用时长，养成健康的屏幕使用习惯，让科技更好地陪伴成长。</text>
+        </view>
+      </view>
+
+      <view class="sheet-btn" hover-class="sheet-btn-hover" hover-stay-time="80" bindtap="onKnowTap">知道了</view>
     </view>
-    <view class="sheet-btn" bindtap="onKnowTap">知道了</view>
   </view>
 </view>
