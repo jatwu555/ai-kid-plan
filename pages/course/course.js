@@ -27,14 +27,7 @@ Page({
     slideX: 0,    // 滑块位移（px）
     maxSlide: 0,  // 滑块最大位移（px），onReady 里实测
     botFaceSrc: faceBotSvg(), // AI 小伙伴头像（SVG data URI）
-    // 挑战完成弹窗
-    showDonePop: false,   // 是否显示完成弹窗
-    donePopin: false,     // 弹窗淡入动画标记（延时触发，保证过渡生效）
-    popBtnPressed: false, // 「晒一晒」按下态（touch 驱动，避免导航后 hover 残留）
-    resharePressed: false, // 滑轨下方「分享」按下态（同上）
-    completedDays: 0,     // 已完成天数
-    totalDays: 5,         // 总天数（courses.length）
-    popStars: []          // 弹窗进度星标 [true, true, false, false, false]
+    resharePressed: false // 滑轨旁「分享」按下态（touch 驱动，避免导航后残留）
   },
 
   onLoad(options) {
@@ -111,45 +104,26 @@ Page({
     }
   },
 
-  // 标记完成：写入本地存储 + 震动反馈 + 滑块锁定到最右 + 弹出挑战完成弹窗
+  // 标记完成：写入本地存储 + 震动反馈 + 滑块锁定到最右 + 直接进入晒一晒分享页
   finishCourse() {
     const map = wx.getStorageSync(DONE_KEY) || {}
     map[this.data.course.id] = true
     wx.setStorageSync(DONE_KEY, map)
     wx.vibrateShort({ type: 'light' })
-    const completed = countDone()
-    const total = courses.length
-    // 进度星标：完成的前 completed 天点亮
-    const popStars = courses.map((c, i) => i < completed)
     this.setData({
       done: true,
-      slideX: this.data.maxSlide,
-      completedDays: completed,
-      totalDays: total,
-      popStars,
-      showDonePop: true
+      slideX: this.data.maxSlide
     })
     // 滑轨因并排「分享」按钮变窄，等布局更新后重测滑行距离，避免滑块越界
     setTimeout(() => this.measureTrack(), 80)
-    // 延时一帧触发淡入动画
-    setTimeout(() => this.setData({ donePopin: true }), 60)
-  },
-
-  // 「先不晒」关闭弹窗（可从首页「继续学习」重新进入课程，但弹窗只在完成当次弹出）
-  onCloseDonePop() {
-    this.setData({ donePopin: false })
-    setTimeout(() => this.setData({ showDonePop: false }), 220)
-  },
-
-  // 晒一晒：跳转挑战成功海报页（动态携带课程与进度）
-  onSharePoster() {
+    // 不再弹窗：直接进入晒一晒分享页（进度实时计算）
     const c = this.data.course
     wx.navigateTo({
-      url: `/pages/poster/poster?day=${c.day}&title=${encodeURIComponent(c.title)}&done=${this.data.completedDays}&total=${this.data.totalDays}`
+      url: `/pages/poster/poster?day=${c.day}&title=${encodeURIComponent(c.title)}&done=${countDone()}&total=${courses.length}`
     })
   },
 
-  // 滑轨下方「分享」：完成后随时再次打开晒一晒页（实时重算进度，不依赖弹窗状态）
+  // 滑轨旁「分享」：完成后随时再次打开晒一晒页（实时重算进度）
   onSharePosterTap() {
     const c = this.data.course
     wx.navigateTo({
@@ -168,16 +142,6 @@ Page({
     }
   },
 
-  // 「晒一晒」按下态：touch 驱动，与首页目录行同一策略，避免 navigateTo 后 hover 残留
-  onPopBtnPressStart() {
-    this.setData({ popBtnPressed: true })
-  },
-
-  onPopBtnPressEnd() {
-    if (this.data.popBtnPressed) {
-      this.setData({ popBtnPressed: false })
-    }
-  },
 
   // 好友分享：邀请语 + 定向课程路径（右上角菜单与页面内分享按钮共用）
   onShareAppMessage() {
@@ -198,5 +162,4 @@ Page({
   },
 
   // 阻止弹窗出现时底层页面滚动
-  preventTouchMove() {}
 })

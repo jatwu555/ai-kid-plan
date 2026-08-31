@@ -46,7 +46,7 @@
     </view>
   </view>
 
-  <!-- 滑动完成今天的学习：完成后滑轨变绿锁定 + 弹出挑战完成弹窗；完成态滑轨与「分享」并排 -->
+  <!-- 滑动完成今天的学习：完成后滑轨变绿锁定并直接进入晒一晒页；完成态滑轨与「分享」并排 -->
   <view class="slide-row">
     <view class="slide-track {{done ? 'is-done' : ''}}">
       <view class="slide-text">{{done ? '完成挑战啦～' : '滑动完成今天的学习'}}</view>
@@ -68,23 +68,5 @@
       <image class="reshare-ic" src="/assets/icon-wechat-white.png" mode="aspectFit" />
       <text>分享</text>
     </view>
-  </view>
-</view>
-
-<!-- 挑战完成弹窗：全屏半透明遮罩 + 白色圆角弹窗，轻量仪式感 -->
-<view class="done-mask {{donePopin ? 'is-show' : ''}}" wx:if="{{showDonePop}}" catchtouchmove="preventTouchMove">
-  <view class="done-pop">
-    <image class="pop-bot" src="{{botFaceSrc}}" mode="aspectFit"/>
-    <view class="pop-title">完成挑战啦～</view>
-    <view class="pop-course">第{{course.day}}天 · {{course.title}}</view>
-    <view class="pop-progress">
-      <text class="pop-star">★</text>
-      <text class="pop-progress-text">已完成 {{completedDays}} / {{totalDays}} 天</text>
-    </view>
-    <view class="pop-stars">
-      <text class="pop-star-mark {{item ? 'is-on' : ''}}" wx:for="{{popStars}}" wx:key="index">★</text>
-    </view>
-    <button class="pop-main-btn {{popBtnPressed ? 'is-pressed' : ''}}" bindtap="onSharePoster" bindtouchstart="onPopBtnPressStart" bindtouchend="onPopBtnPressEnd" bindtouchcancel="onPopBtnPressEnd">晒一晒</button>
-    <view class="pop-sub-btn" bindtap="onCloseDonePop">先不晒</view>
   </view>
 </view>
