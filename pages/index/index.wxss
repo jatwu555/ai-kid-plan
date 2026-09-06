@@ -131,10 +131,15 @@
   font-weight: 600;
 }
 
-/* ── 底部说明 ── */
-.foot {
+/* ── 底部说明 + 温馨提示：同一行，间隔 20px（40rpx） ── */
+.foot-row {
   margin-top: 40rpx;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28rpx;
+}
+.foot {
   font-size: 22rpx;
   color: #A2937F;
 }
@@ -204,14 +209,13 @@
 
 /* ── 底部「温馨提示」入口：再次唤出家长须知 ── */
 .notice-entry {
-  margin-top: 18rpx;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8rpx;
   font-size: 24rpx;
   color: #B5502C;
-  padding: 14rpx 28rpx;
+  /* 左内边距 12rpx + 行 gap 28rpx = 40rpx（20px）可见间距 */
+  padding: 14rpx 12rpx;
 }
 .notice-entry-heart {
   width: 26rpx;

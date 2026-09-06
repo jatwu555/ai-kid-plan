@@ -51,11 +51,13 @@
     >邀请朋友</button>
   </view>
 
-  <!-- 底部说明 + 温馨提示入口（点击再次查看家长须知） -->
-  <view class="foot">适读 5～10 岁 · 请家长陪同一起使用</view>
-  <view class="notice-entry" hover-class="notice-entry-hover" hover-stay-time="80" bindtap="onNoticeEntryTap">
-    <text class="notice-entry-heart"></text>
-    <text>温馨提示</text>
+  <!-- 底部说明 + 温馨提示入口同行（间距 20px，点击再次查看家长须知） -->
+  <view class="foot-row">
+    <view class="foot">适读 5～10 岁 · 请家长陪同一起使用</view>
+    <view class="notice-entry" hover-class="notice-entry-hover" hover-stay-time="80" bindtap="onNoticeEntryTap">
+      <text class="notice-entry-heart"></text>
+      <text>温馨提示</text>
+    </view>
   </view>
 </view>
 
