@@ -17,6 +17,7 @@
   --shadow-card: 0 2px 8px rgba(92, 70, 40, 0.06);
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+[hidden] { display: none !important; }
 html, body { margin: 0; padding: 0; }
 html.no-scroll, html.no-scroll body { overflow: hidden; }
 body {
@@ -640,35 +641,15 @@ img { display: block; }
 .back-link { display: inline-block; padding: 8px 20px; font-size: 12px; color: var(--faint); }
 .back-link:active { opacity: 0.6; }
 
-/* ── 朋友圈引导弹层 ── */
-.tl-tip {
-  width: 100%;
-  max-width: 270px;
-  background: #FFFFFF;
-  border-radius: 18px;
-  padding: 24px 20px 20px;
-  text-align: center;
+/* ── 分享封面：微信「···」菜单卡片抓取用，页面上不可见 ── */
+.share-cover {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
 }
-.tl-tip-title { font-size: 17px; font-weight: 800; color: var(--ink); }
-.tl-tip-text {
-  margin-top: 10px;
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.8;
-  text-align: left;
-}
-.tl-tip-btn {
-  margin-top: 18px;
-  height: 42px;
-  line-height: 42px;
-  background: var(--terra);
-  color: #FFFFFF;
-  font-size: 14px;
-  font-weight: 700;
-  border-radius: 21px;
-  cursor: pointer;
-}
-.tl-tip-btn:active { opacity: 0.92; }
 
 /* ── Toast ── */
 .toast {

@@ -61,13 +61,19 @@
       showToast(legacyCopy(url) ? okMsg : '复制失败，请手动复制地址栏链接');
     }
   }
-  // 分享：优先 Web Share API；不可用（如桌面 / 部分微信内核）时降级为复制链接
+  // 微信内置浏览器检测：微信里 navigator.share 不可靠（可能静默失败，点了没反应）
+  function isWeChat() {
+    return /MicroMessenger/i.test(navigator.userAgent);
+  }
+  // 分享：微信内直接复制链接（粘贴给好友 / 发朋友圈）；其他环境优先 Web Share API，失败也降级复制
   function shareOrCopy(data, okMsg) {
-    if (navigator.share) {
-      navigator.share(data).catch(function () {});
-    } else {
+    if (isWeChat() || !navigator.share) {
       copyLink(data.url || siteUrl(), okMsg);
+      return;
     }
+    navigator.share(data).catch(function () {
+      copyLink(data.url || siteUrl(), okMsg);
+    });
   }
   function vibrate() {
     try { if (navigator.vibrate) navigator.vibrate(15); } catch (e) {}
@@ -191,6 +197,7 @@
 
     app.innerHTML = '' +
       '<div class="page">' +
+        '<img class="share-cover" src="assets/share-cover.png" alt="" aria-hidden="true">' +
         '<div class="header"><div class="header-row">' +
           '<div class="header-text">' +
             '<div class="eyebrow">5 天启蒙计划</div>' +
@@ -383,7 +390,7 @@
     var day = clamp(Number(query.day) || 1, 1, total);
     var done = clamp(Number(query.done) || day, 1, total);
     var title = query.title || '今天的 AI 小课堂';
-    document.title = '挑战完成 🎉';
+    document.title = '我完成了「5天AI启蒙挑战」第' + day + '天！';
 
     var stars = '';
     for (var i = 0; i < total; i++) {
@@ -406,19 +413,13 @@
           '<div class="poster-qr" id="qrBox">' + makeQrSvg(siteUrl()) + '</div>' +
           '<div class="poster-qr-label">扫码一起认识 AI</div>' +
         '</div></div>' +
-        '<div class="poster-hint">截图保存这张海报，把挑战成果分享给家人朋友</div>' +
+        '<div class="poster-hint">在微信里可点右上角「···」转发本页；想发海报图就先截图保存</div>' +
+        '<img class="share-cover" src="assets/share-cover.png" alt="" aria-hidden="true">' +
         '<div class="share-bar">' +
           '<button class="share-btn main" id="shareMain" type="button"><img class="btn-ic" src="assets/icon-wechat-white.png" alt=""><span>分享给朋友</span></button>' +
           '<button class="share-btn sub" id="shareMoments" type="button"><img class="btn-ic" src="assets/icon-moments.png" alt=""><span>朋友圈</span></button>' +
         '</div>' +
         '<div class="back-row"><span class="back-link" id="backCourse" role="button" tabindex="0">返回课程</span></div>' +
-      '</div>' +
-      '<div class="mask" id="tlTip" hidden>' +
-        '<div class="tl-tip">' +
-          '<div class="tl-tip-title">分享到朋友圈</div>' +
-          '<div class="tl-tip-text">先截图保存上面的挑战海报，再打开微信朋友圈发布图片，把挑战成果分享给朋友们。</div>' +
-          '<div class="tl-tip-btn" id="tlTipOk" role="button" tabindex="0">我知道了</div>' +
-        '</div>' +
       '</div>';
 
     document.getElementById('shareMain').addEventListener('click', function () {
@@ -428,14 +429,13 @@
         url: siteUrl()
       }, '链接已复制，去粘贴给朋友吧');
     });
-    var tlTip = document.getElementById('tlTip');
     document.getElementById('shareMoments').addEventListener('click', function () {
-      tlTip.hidden = false;
-      lockScroll(true);
+      shareOrCopy({
+        title: '我完成了「5天AI启蒙挑战」第' + day + '天！',
+        text: '已完成 ' + done + '/' + total + ' 天，每天5分钟，和孩子一起认识AI',
+        url: siteUrl()
+      }, '链接已复制，发朋友圈时粘贴即可');
     });
-    function closeTip() { tlTip.hidden = true; lockScroll(false); }
-    document.getElementById('tlTipOk').addEventListener('click', closeTip);
-    tlTip.addEventListener('click', function (e) { if (e.target === tlTip) closeTip(); });
     document.getElementById('backCourse').addEventListener('click', function () {
       goBack('#/course/' + day);
     });
