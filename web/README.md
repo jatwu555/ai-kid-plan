@@ -39,7 +39,7 @@ web/
 - 家长须知首用弹窗、底部「温馨提示」再次唤起：`localStorage.notice_confirmed`
 - 「继续学习」标记：`localStorage.last_read_course`
 - 滑动完成（拖过 80% 判定）+ 已完成绿色锁定 + 绿勾徽标：`localStorage.done_courses`
-- 微信原生分享 → Web Share API（微信内置浏览器等不支持时自动降级为复制链接）
+- 微信原生分享 → Web Share API；微信内及降级场景一键复制完整文案「跟我一起学习ai，5天启蒙计划～立即访问：<链接>」
 - 海报二维码：小程序里是占位图，网页版生成**真实二维码**，指向本网页地址，扫码即达
 
 ## 修改指南
@@ -55,5 +55,5 @@ web/
 - 视频移动端内联播放（playsinline / x5-playsinline），16:9 自适应
 - 滑动完成用 Pointer Events + `touch-action: none`，拖动不误触页面滚动
 - 弹窗打开时锁定背景滚动；非法课程 id 兜底第 1 课；海报参数越界钳制
-- 分享按钮在无 Web Share 环境降级复制链接并 toast 提示；键盘可操作目录行（Enter/空格）
+- 分享按钮在无 Web Share 环境降级复制「文案+链接」并 toast 单行提示；键盘可操作目录行（Enter/空格）
 - 无外部运行时依赖（二维码库已本地内置），离线打开除视频外均可渲染

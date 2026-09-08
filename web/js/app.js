@@ -65,14 +65,17 @@
   function isWeChat() {
     return /MicroMessenger/i.test(navigator.userAgent);
   }
-  // 分享：微信内直接复制链接（粘贴给好友 / 发朋友圈）；其他环境优先 Web Share API，失败也降级复制
+  // 复制用完整文案：句子 + 链接一起进剪贴板
+  var SHARE_LEAD = '跟我一起学习ai，5天启蒙计划～立即访问：';
+  // 分享：微信内直接复制「文案+链接」；其他环境优先 Web Share API，失败也降级复制
   function shareOrCopy(data, okMsg) {
+    var copyText = data.copyText || (SHARE_LEAD + siteUrl());
     if (isWeChat() || !navigator.share) {
-      copyLink(data.url || siteUrl(), okMsg);
+      copyLink(copyText, okMsg);
       return;
     }
     navigator.share(data).catch(function () {
-      copyLink(data.url || siteUrl(), okMsg);
+      copyLink(copyText, okMsg);
     });
   }
   function vibrate() {
@@ -228,9 +231,10 @@
     document.getElementById('inviteBtn').addEventListener('click', function () {
       shareOrCopy({
         title: '和朋友一起学习ai，邀请他们接受挑战～',
-        text: '5天AI启蒙挑战，每天5分钟，和孩子一起认识AI',
-        url: siteUrl()
-      }, '链接已复制，去粘贴给朋友吧');
+        text: '跟我一起学习ai，5天启蒙计划～',
+        url: siteUrl(),
+        copyText: SHARE_LEAD + siteUrl()
+      }, '已复制，去粘贴给朋友吧');
     });
     document.getElementById('noticeEntry').addEventListener('click', function () {
       app.insertAdjacentHTML('beforeend', noticeModalHTML());
@@ -425,16 +429,18 @@
     document.getElementById('shareMain').addEventListener('click', function () {
       shareOrCopy({
         title: '我完成了「5天AI启蒙挑战」第' + day + '天！',
-        text: '已完成 ' + done + '/' + total + ' 天，每天5分钟，和孩子一起认识AI',
-        url: siteUrl()
-      }, '链接已复制，去粘贴给朋友吧');
+        text: '跟我一起学习ai，5天启蒙计划～',
+        url: siteUrl(),
+        copyText: SHARE_LEAD + siteUrl()
+      }, '已复制，去粘贴给朋友吧');
     });
     document.getElementById('shareMoments').addEventListener('click', function () {
       shareOrCopy({
         title: '我完成了「5天AI启蒙挑战」第' + day + '天！',
         text: '已完成 ' + done + '/' + total + ' 天，每天5分钟，和孩子一起认识AI',
-        url: siteUrl()
-      }, '链接已复制，发朋友圈时粘贴即可');
+        url: siteUrl(),
+        copyText: SHARE_LEAD + siteUrl()
+      }, '已复制，发朋友圈时粘贴即可');
     });
     document.getElementById('backCourse').addEventListener('click', function () {
       goBack('#/course/' + day);

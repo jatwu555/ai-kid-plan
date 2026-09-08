@@ -666,7 +666,7 @@ img { display: block; }
   opacity: 0;
   transition: opacity 0.25s ease;
   pointer-events: none;
-  max-width: 80vw;
+  white-space: nowrap;
   text-align: center;
 }
 .toast.show { opacity: 1; }
